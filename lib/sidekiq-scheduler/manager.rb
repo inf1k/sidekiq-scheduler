@@ -32,6 +32,11 @@ module SidekiqScheduler
       # If dynamic is set, load that schedule otherwise use normal load
       if @enabled && Sidekiq::Scheduler.dynamic
         Sidekiq::Scheduler.reload_schedule!
+
+        Sidekiq::Scheduler.rufus_scheduler.every '10s' do
+          Sidekiq::Scheduler.update_schedule
+        end
+
       elsif @enabled
         Sidekiq::Scheduler.load_schedule!
       end
