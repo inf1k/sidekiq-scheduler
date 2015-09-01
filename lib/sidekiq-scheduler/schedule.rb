@@ -94,7 +94,7 @@ module SidekiqScheduler
     #                                       :args => '/tmp/poop' })
     def set_schedule(name, config)
       existing_config = get_schedule(name)
-      unless existing_config && existing_config == config
+      unless existing_config == config
         Sidekiq.redis { |r| r.hset(:schedules, name, MultiJson.encode(config)) }
         Sidekiq.redis { |r| r.sadd(:schedules_changed, name) }
       end
